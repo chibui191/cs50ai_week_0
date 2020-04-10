@@ -25,19 +25,18 @@ def player(board):
     """
     count_X = 0
     count_O = 0
-    # Access each row in board list & count the number of X's and O's
+    # Access each row in board list & count the number of X's and O's	
     if not terminal(board):
-      for i in range(0,3):
-        for j in range(0,3):
-          if board[i][j] == X:
-            count_X += 1
-          elif board[i][j] == O:
-            count_O += 1
-      return X if count_X == count_O else O
+        for i in range(0, 3):
+            for j in range(0, 3):
+                if board[i][j] == X:
+                    count_X += 1
+                elif board[i][j] == O:
+                    count_O += 1
+        return X if count_X == count_O else O
     else:
-      return 2
+        return 2
     
-
 
 def actions(board):
     """
@@ -45,14 +44,13 @@ def actions(board):
     """
     possible_moves = []
     if not terminal(board):
-      for i in range(0,3):
-        for j in range(0,3):
-          if board[i][j] is EMPTY:
-            possible_moves.append((i, j))
-      return possible_moves
+        for i in range(0, 3):
+            for j in range(0, 3):
+                if board[i][j] is EMPTY:
+                    possible_moves.append((i, j))
+        return possible_moves
     else:
-      return 2
-
+        return 2
 
 
 def result(board, action):
@@ -73,39 +71,38 @@ def result(board, action):
         raise Exception("Invalid Action") 
 
 
-
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    winnning_combos = [[(0,0), (0,1), (0,2)],
-                       [(1,0), (1,1), (1,2)],
-                       [(2,0), (2,1), (2,2)],
-                       [(0,0), (1,0), (2,0)],
-                       [(0,1), (1,1), (2,1)],
-                       [(1,0), (1,1), (1,2)],
-                       [(0,0), (1,1), (2,2)],
-                       [(0,2), (1,1), (2,0)]]
-    # Log all X's cells:
+    winnning_combos = [[(0, 0), (0, 1), (0, 2)],
+                       [(1, 0), (1, 1), (1, 2)],
+                       [(2, 0), (2, 1), (2, 2)],
+                       [(0, 0), (1, 0), (2, 0)],
+                       [(0, 1), (1, 1), (2, 1)],
+                       [(1, 0), (1, 1), (1, 2)],
+                       [(0, 0), (1, 1), (2, 2)],
+                       [(0, 2), (1, 1), (2, 0)]]
     moves_X = []
     moves_O = []
-    for i in range(0,3):
-      for j in range(0,3):
-        if board[i][j] == X:
-          moves_X.append((i,j))
-        elif board[i][j] == O:
-          moves_O.append((i,j))
+
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if board[i][j] == X:
+                moves_X.append((i, j))
+            elif board[i][j] == O:
+                moves_O.append((i, j))
     
     set_moves_X = set(moves_X)
     set_moves_O = set(moves_O)
 
     # Check if either moves_X or moves_O contains a winning combo
     for win in winnning_combos:
-      set_win = set(win)
-      if set_win.issubset(set_moves_X):
-        return X
-      elif set_win.issubset(set_moves_O):
-        return O
+        set_win = set(win)
+        if set_win.issubset(set_moves_X):
+            return X
+        elif set_win.issubset(set_moves_O):
+            return O
     return None
 
 
@@ -115,13 +112,13 @@ def terminal(board):
     """
     # Check if anybody has won the game
     if not winner(board) is None:
-      return True
+        return True
     else:
-      for i in range(0,3):
-        for j in range(0,3):
-          if board[i][j] == EMPTY:
-            return False
-      return True
+        for i in range(0, 3):
+            for j in range(0, 3):
+                if board[i][j] == EMPTY:
+                    return False
+        return True
 
 
 def utility(board):
@@ -130,11 +127,11 @@ def utility(board):
     """
     p = winner(board)
     if p == X:
-      return 1
-    elif p == O:
-      return -1
+        return 1
+    if p == O:
+        return -1
     else:
-      return 0
+        return 0
 
     
 # minimax_value with alpha-beta pruning
@@ -151,8 +148,8 @@ def minimax_value(board):
         for action in actions(board):
             value = minimax_value(result(board, action))[0]
             if value > alpha:
-              alpha = value
-              best_move = action
+                alpha = value
+                best_move = action
             if beta <= alpha:
                 break
         return alpha, best_move
@@ -161,8 +158,8 @@ def minimax_value(board):
         for action in actions(board):
             value = minimax_value(result(board, action))[0]
             if value < beta:
-              beta = value
-              best_move = action
+                beta = value
+                best_move = action
             if beta <= alpha:
                 break
         return beta, best_move
